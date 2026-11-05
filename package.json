@@ -1,0 +1,28 @@
+{
+  "name": "notes-api-2324802010275",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CodeingOver/notes-api-2324802010275.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/CodeingOver/notes-api-2324802010275/issues"
+  },
+  "homepage": "https://github.com/CodeingOver/notes-api-2324802010275#readme",
+  "dependencies": {
+    "express": "^5.3.0"
+  }
+}
