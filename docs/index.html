@@ -60,5 +60,43 @@
     <li><strong>Rapid elasticity (Co giãn nhanh chóng):</strong> Có thể nâng hạ cấu hình phần cứng (chọn loại máy 2-core, 4-core,...) hoặc tăng dung lượng lưu trữ ngay lập tức khi khối lượng công việc thay đổi.</li>
     <li><strong>Measured service (Dịch vụ đo lường được):</strong> GitHub tự động đo lường thời gian hoạt động theo từng Core-giờ (Core-hours) và dung lượng đĩa sử dụng, hiển thị minh bạch tại trang Billing Usage.</li>
   </ul>
+
+  <h2>3. Thời điểm hoàn thành cloudlet cuối</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Lần</th>
+        <th>Thay đổi</th>
+        <th>Thời điểm hoàn thành cloudlet cuối (giây mô phỏng)</th>
+        <th>Giải thích ngắn gọn</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>0</strong></td>
+        <td>Giữ nguyên (<code>VMS=2</code>, <code>CLOUDLETS=4</code>)</td>
+        <td><strong>20.22</strong></td>
+        <td>2 VM chia đều 4 cloudlet; mỗi VM có 4 lõi đủ chạy song song 2 cloudlet (2 lõi/cloudlet) không tranh chấp nên hoàn thành sau 20s + 0.22s khởi tạo.</td>
+      </tr>
+      <tr>
+        <td><strong>1</strong></td>
+        <td>Nhân đôi VMS (<code>VMS=4</code>)</td>
+        <td><strong>45.71</strong></td>
+        <td>Host chỉ có 8 lõi nên ban đầu chỉ tạo được 2 VM; log báo lỗi thiếu lõi với VM #2 và #3. Hai VM sau phải chờ 2 VM đầu xong lúc 20.22s mới được Broker cấp phát lại ở 25.71s và chạy thêm 20s.</td>
+      </tr>
+      <tr>
+        <td><strong>2</strong></td>
+        <td>Nhân đôi CLOUDLETS (<code>CLOUDLETS=8</code>)</td>
+        <td><strong>40.22</strong></td>
+        <td>Mỗi VM nhận 4 cloudlet (cần 8 lõi &gt; 4 lõi của VM); bộ lập lịch <code>TimeShared</code> chia đôi thời gian CPU nên thời gian chạy tăng gấp đôi (40s + 0.22s).</td>
+      </tr>
+      <tr>
+        <td><strong>3</strong></td>
+        <td>Đổi sang <code>CloudletSchedulerSpaceShared</code></td>
+        <td><strong>20.22</strong></td>
+        <td>Với cấu hình gốc (<code>CLOUDLETS=4</code>), mỗi VM nhận 2 cloudlet &times; 2 lõi = 4 lõi (vừa đủ <code>VM_PES=4</code>) nên cả 2 được cấp lõi độc quyền chạy ngay, không phải xếp hàng chờ.</td>
+      </tr>
+    </tbody>
+  </table>
 </body>
 </html>
